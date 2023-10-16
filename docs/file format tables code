@@ -1,0 +1,80 @@
+@startuml
+!theme spacelab
+allowmixing
+
+title 
+
+
+asnames.json
+
+<#99CCEE>|=  Key |=<#333333> |=  **asnumber** |=  **asname** |=  cc |
+<#lightblue>| <plain><i> Type|<#333333>  | <plain><i> as number| <plain><i> as name | <plain><i> country |
+<#333333>|                         |<#333333>  |                      |                    |                  |
+<#lightgreen>| <plain> Example   |<#333333>  | <plain> "1"        | <plain> "LVLT-1" | <plain> "US"   |
+
+
+
+nro_ipv4.json
+
+<#99CCEE>|=  Key |=<#333333> |=  **start** |=  **value** |=  cc |
+<#lightblue>| <plain><i> Type|<#333333>  | <plain><i>first ip | <plain><i>host number | <plain><i>country|
+<#333333>|                         |<#333333>  |                     |                    |                  |
+<#lightgreen>| <plain>   Example   |<#333333>  | <plain>   "1.0.0.0" | <plain>   "256" | <plain>   "AU"   |
+
+
+
+nro_ipv6.json
+
+<#99CCEE>|=  Key |=<#333333> |=  **start** |=  **value** |=  cc |
+<#lightblue>| <plain><i> Type |<#333333>  | <plain><i> cidr prefix | <plain><i> cidr suffix | <plain><i> country |
+<#333333>|                         |<#333333>  |                     |                    |                  |
+<#lightgreen>| <plain> Example |<#333333>  | <plain> "2001:200::" | <plain> "35" | <plain> "JP" |
+
+
+
+nro_asn.json
+
+<#99CCEE>|=  Key |=<#333333> |=  **start** |=  **value** |=  cc |
+<#lightblue>| <plain><i> Type |<#333333>  | <plain><i> as number | <plain><i> as count | <plain><i> country |
+<#333333>|                         |<#333333>  |                     |                    |                  |
+<#lightgreen>| <plain> Example |<#333333>  | <plain> "4" | <plain> "1" | <plain> "US" |
+
+
+
+bgptable4.json | bgptable6.json 
+
+<#99CCEE>|=  Key |=<#333333> |=  **prefix** |=  **as-path** |=  origin-as |
+<#lightblue>| <plain><i> Type |<#333333>  | <plain><i> subnet/cidr | <plain><i> asn list | <plain><i> as number |
+<#333333>|                         |<#333333>  |                     |                    |                  |
+<#lightgreen>| <plain> Example |<#333333>  | <plain> "7.0.0.0/8" | <plain> ["29680","3257","3356"] | <plain> "749" |
+
+
+
+GeoLite2-Country-Location-IPv4.json | -IPv6
+
+<#99CCEE>|=  Key |=<#333333> |=  **network** |=  **cc** |=  **reg_cc** | **rep_cc** |
+<#lightblue>| <plain><i> Type |<#333333>  | <plain><i> subnet/cidr | <plain><i> location | <plain><i> registered | <plain><i> rerpresented |
+<#333333>|                         |<#333333>  |                     |                    |                  |                  |
+<#lightgreen>| <plain> Example |<#333333>  | <plain> "2.116.79.0/24" | <plain> "IT" | <plain> "IT" | <plain> "US" |
+
+
+
+ip2loc4.json | ip2loc6.json
+
+<#99CCEE>|=  Key |=<#333333> |=  **start** |=  **end** |=  cc |
+<#lightblue>| <plain><i> Type|<#333333>  | <plain><i>first ip | <plain><i> last ip| <plain><i> country |
+<#333333>|                         |<#333333>  |                     |                    |                  |
+<#lightgreen>| <plain>   Example   |<#333333>  | <plain>   "16777472" | <plain>   "16778239" | <plain>   "CN"   |
+
+
+
+bgpaspath4.json | bgpaspath6.json
+
+<#99CCEE>|=  List <int> |=<#333333> |=  **[]** |
+<#lightblue>| <plain><i> Type |<#333333>  | <plain><i> active as| | |
+<#333333>|                         |<#333333>  |                     |                    |                  |
+<#lightgreen>| <plain> Example |<#333333>  | <plain> [2,12,33,...] |  |
+
+end title
+
+@enduml

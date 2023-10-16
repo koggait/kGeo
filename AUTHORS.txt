@@ -1,0 +1,5 @@
+The current maintainer:
+    * Sebastian Kogga <developer@kogga.it>
+
+Contributors:
+    Distributed Systems group <contact@vs.uni-kassel.de>

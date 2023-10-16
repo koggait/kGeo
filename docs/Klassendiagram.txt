@@ -1,0 +1,108 @@
+@startuml
+!theme spacelab
+
+class raw_rirstats{
+  registry
+  cc
+  type
+  start
+  value
+  date
+  status
+  obaque-id
+  extensions
+}
+
+class rirstats{
+  cc
+  start
+  value
+}
+
+class asnames {
+  asnumber
+  asname
+  cc
+}
+
+class raw_IPMAP {
+  ip
+  geolocation_id
+  city_name
+  state_name
+  country_name
+  cc
+  country_code_alpha3
+  latitude
+  longitude
+  score
+}
+
+class IPMAP {
+  ip
+  cc
+}
+
+class raw_RISWHOIS {
+  origin
+  prefix
+  rispeers
+}
+
+class RISWHOIS {
+  origin
+  prefix
+}
+
+class BGPTABLE {
+  Prefix / CIDR-Suffix
+  AS-Path
+  Origin-AS
+}
+
+class raw_IP2LOC {
+  start
+  end
+  cc
+  country
+}
+
+class IP2LOC {
+  start
+  end
+  cc
+}
+
+class MAX_COUNTRY_ASN {
+  start_ip
+  end_ip
+  country
+  country_name
+  continent
+  continent_name
+  asn
+  as_name
+  as_domain
+}
+
+class MAX4 {
+  network
+  geoname_id
+  registered_country_geoname_id
+  represented_country_geoname_id
+  is_anonymous_proxy
+  is_satellite_provider
+}
+
+class MAXCOUNTRYLOC {
+  geoname_id
+  locale_code
+  continent_code
+  continent_name
+  country_iso_code
+  country_name
+  is_in_european_union
+}
+
+
+@enduml
