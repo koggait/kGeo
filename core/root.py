@@ -60,7 +60,7 @@ class Root:
     # --------------------------------------------------
 
     # data path
-    COREDIR = '../core/'
+    COREDIR = 'core/'
     DATADIR = 'data/'
     HISTORYDIR = 'history/'
 

@@ -1,4 +1,4 @@
-##### kGeo 1.3 RC - Data-Driven AS & IP Geolocation
+##### kGeo 0.1.4 - Data-Driven AS & IP Geolocation
 
 *****************************************************************************
 
@@ -8,7 +8,7 @@
 
 *****************************************************************************
 
-## About kGeo 1.3 RC
+## About kGeo 0.1.4
 
 This repository aims at getting started with an analytical database for geolocation of internet autonomous systems.
 *****************************************************************************
@@ -78,7 +78,7 @@ Executing scripts from within the core package is also possible,
 except for utility files. Keep in Mind, that some scripts need other pre-executed scripts,
 if you are running kGeo for the first time.
 
-Arguments: | -d, --daily | -a, --analysis | -as,  --asnames | -bgp, --bgptable | -ip2, --ip2loc | -ipi, --ipinfo | -max, --maxmind | -pee, --peeringdb | -ris, --riswhois | -map, --ipmap | -r,   --rir |
+Arguments: | -d, --daily | -a, --analysis | -l, --local | -as,  --asnames | -bgp, --bgptable | -ip2, --ip2loc | -ipi, --ipinfo | -max, --maxmind | -pee, --peeringdb | -ris, --riswhois | -map, --ipmap | -r,   --rir |
 
 *****************************************************************************
 

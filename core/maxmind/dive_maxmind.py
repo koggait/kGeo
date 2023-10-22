@@ -9,7 +9,7 @@ from core.root import Root
 
 
 def diving_maxmind():
-#    mirroring_maxmind()
+    mirroring_maxmind()
     serialization_maxmind()
     processing_maxmind()
     merging_maxmind()
