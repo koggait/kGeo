@@ -1,0 +1,15 @@
+{
+  "full_name": "Sebastian Kogga",
+  "email": "developer@kogga.it",
+  "github_username": "koggait",
+  "project_name": "kGeo",
+  "project_slug": "kgeo",
+  "project_short_description": "AS & IP Geolocation Database",
+  "pypi_username": "kogga",
+  "version": "0.1.4",
+  "use_pytest": "n",
+  "use_black": "n",
+  "command_line_interface": ["Click"],
+  "create_author_file": "y",
+  "open_source_license": ["CC BY-NC-SA 4.0 DEED"]
+}

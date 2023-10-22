@@ -29,7 +29,7 @@ def mirror_file(filename):
 def decompress_maxmind_archive(compressed_archive):
     import zipfile
     with zipfile.ZipFile(compressed_archive, 'r') as f:
-        print(f.namelist())
+        print('Decompress: ' + str(f.namelist()))
         if Root.MAXASN in compressed_archive:
             RootRuntime.MAXASNLIST = [f.namelist()[2], f.namelist()[3]]
             saveRootRuntime(1, 'MAXASNLIST = ' + str(RootRuntime.MAXASNLIST))
@@ -52,8 +52,8 @@ def decompress_maxmind_archive(compressed_archive):
     print(mlist)
 
 def saveRootRuntime(no, content):
-    input_file = gen_file_extension(gendir(Root.COREDIR, Root.ROOTRUNTIME), Root.PY)
-    print(input_file)
+    import os
+    input_file = os.path.abspath(RootRuntime.RRPATH)
     with open(input_file, 'r') as file:
         lines = file.readlines()
     lines[no] = '   ' + content + '\n'
