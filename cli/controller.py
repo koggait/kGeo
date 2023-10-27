@@ -14,7 +14,7 @@ from cli.control_util import diving_data
 from cli.control_util import mirror_data
 from cli.control_util import serialize_data
 from cli.control_util import backup_data
-from cli.control_util import analysis
+from cli.control_util import analize_data
 
 def control(argv):
     parser = argparse.ArgumentParser(prog='kGeo 1.3 RC',
@@ -29,10 +29,6 @@ def control(argv):
     # Add operation arguments
     parser.add_argument('-a', '--analysis', action='store_true', help='Run analysis related functions.')
     parser.add_argument('-d', '--daily', action='store_true',help='Run all mirroring, serialization and backup related functions.')
-    # Add high-level operation arguments
-    parser.add_argument('-a', '--analysis', action='store_true', help='Run analysis related functions.')
-    parser.add_argument('-d', '--daily', action='store_true',
-                        help='Run all mirroring, serialization and backup related functions.')
     # Add specific option arguments
     parser.add_argument('-as', '--asnames', action='store_true', help='Operate on asnames data.')
     parser.add_argument('-bgp', '--bgptable', action='store_true', help='Operate on BGP table data.')

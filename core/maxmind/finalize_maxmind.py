@@ -48,11 +48,11 @@ def finalize_by_cc(filename, output):
             for subnet in json_subnets:
 
                 if subnet['cc'] != "":
-                    real_cc[subnet['cc']].add(int(json_object[Root.MAXASNFIELDS[1]]))
+                    real_cc[subnet['cc']].add(int(json_object[Root.MAXMIND[Root.ASN][Root.FIELDS][1]]))
                 if subnet['reg_cc'] != "":
-                    reg_cc[subnet['reg_cc']].add(int(json_object[Root.MAXASNFIELDS[1]]))
+                    reg_cc[subnet['reg_cc']].add(int(json_object[Root.MAXMIND[Root.ASN][Root.FIELDS][1]]))
                 if subnet['rep_cc'] != "":
-                    rep_cc[subnet['rep_cc']].add(int(json_object[Root.MAXASNFIELDS[1]]))
+                    rep_cc[subnet['rep_cc']].add(int(json_object[Root.MAXMIND[Root.ASN][Root.FIELDS][1]]))
     for key in real_cc:
         tmp = list(real_cc[key])
         tmp.sort()
@@ -117,15 +117,15 @@ def get_location_keys():
     json_list = {}
     for json_object in json_loc_data:
         dic = {}
-        dic[Root.MAXCOUNTRYLOCFIELDS[4]] = json_object[Root.MAXCOUNTRYLOCFIELDS[4]]
-        json_list[json_object[Root.MAXCOUNTRYLOCFIELDS[4]]] = set()
+        dic[Root.MAXMIND[Root.COUNTRY][Root.LOCATIONS_FIELDS][4]] = json_object[Root.MAXMIND[Root.COUNTRY][Root.LOCATIONS_FIELDS][4]]
+        json_list[json_object[Root.MAXMIND[Root.COUNTRY][Root.LOCATIONS_FIELDS][4]]] = set()
 
     sorted_json_loc_data = dict(sorted(json_list.items()))
     return sorted_json_loc_data
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     finalization_maxmind()
     exit()

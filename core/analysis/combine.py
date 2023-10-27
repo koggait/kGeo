@@ -1,9 +1,8 @@
 from core.file_util import gen_data_dir
 from core.file_util import gen_data_path_file
 from core.file_util import gen_data_path_extension
-from core.ip_util import ipv4_cidr_to_integer_count
-from core.ip_util import ipv4_to_integer
-from core.ip_util import ipv6_cidr_to_integer_count
+from core.ip_util import cidr_to_integer_count
+from core.ip_util import ip_to_integer
 from core.ip_util import networks_intersect
 from core.json_util import read_from_jsonfile
 from core.json_util import save_to_jsonfile
@@ -53,13 +52,13 @@ def merge_asn_ip4(js1, js2, output):
         ip4 = json_object1['start']
         if ip4 == '57.231.0.0':
             print('s')
-        ip1 = ipv4_to_integer(ip4)
+        ip1 = ip_to_integer(ip4, 4)
         count1 = json_object1['value']
         ip1end = ip1 + int(count1)-1
 
         while j < len(js2):
             json_object2 = js2[j]
-            ip2, count2 = ipv4_cidr_to_integer_count(json_object2.get('network'))
+            ip2, count2 = cidr_to_integer_count(json_object2.get('network'), Root.IPV4)
             ip2end = ip2 + int(count2) -1
 
             if ip1end < ip2:
@@ -107,7 +106,7 @@ def networks_match(ip1, ip1end, ip2, ip2end):
                                                                        subnet_start=ip1, subnet_end=ip1end)
 
 
-def merge_asn_ip6(js1, js2, output):
+def merge_asn_ip6(js1, js2, output, ipv):
     import json
 
     merged = {}
@@ -117,16 +116,17 @@ def merge_asn_ip6(js1, js2, output):
     i = 0
     ii = len(js1)
     j = 0
+
     while i < len(js1):
         percent_done(i, ii)
 
         json_object1 = js1[i]
-        ip1, count1 = ipv6_cidr_to_integer_count(json_object1.get('start') + '/' + json_object1.get('value'))
+        ip1, count1 = cidr_to_integer_count(json_object1.get('start') + '/' + json_object1.get('value'), Root.IPV6)
         ip1end = ip1 + int(count1) - 1
 
         while j < len(js2):
             json_object2 = js2[j]
-            ip2, count2 = ipv6_cidr_to_integer_count(json_object2.get('network'))
+            ip2, count2 = cidr_to_integer_count(json_object2.get('network'), Root.IPV6)
             ip2end = ip2 + int(count2) - 1
 
             if ip1end < ip2:
@@ -135,9 +135,9 @@ def merge_asn_ip6(js1, js2, output):
 
             if ip2end < ip1:
                 unmatched.append(js2.pop(j))
-            elif networks_intersect(network_start=ip1, network_end=ip1end, subnet_start=ip2,
-                                    subnet_end=ip2end) or networks_intersect(network_start=ip2, network_end=ip2end,
-                                                                             subnet_start=ip1, subnet_end=ip1end):
+
+            if networks_match(ip1, ip1end, ip2, ip2end):
+
                 jobj = js2.pop(j)
 
                 if 'geonets' in merged.keys():

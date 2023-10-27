@@ -6,9 +6,9 @@ from core.root_util import print_state
 
 
 def serialization_maxmind():
-    serialize_data(RootRuntime.MAXASNLIST, Root.MAXASNFIELDS)
-    serialize_data(RootRuntime.MAXCOUNTRYLOCLIST, Root.MAXCOUNTRYLOCFIELDS)
-    serialize_data(RootRuntime.MAXCOUNTRYLIST, Root.MAXCOUNTRYFIELDS)
+    serialize_data(RootRuntime.MAXASNLIST, Root.MAXMIND[Root.ASN][Root.FIELDS])
+    serialize_data(RootRuntime.MAXCOUNTRYLOCLIST, Root.MAXMIND[Root.COUNTRY][Root.LOCATIONS_FIELDS])
+    serialize_data(RootRuntime.MAXCOUNTRYLIST, Root.MAXMIND[Root.COUNTRY][Root.FIELDS])
     print_state(Root.SERIALIZE, Root.END, Root.MAXMIND)
 
 
@@ -61,8 +61,8 @@ def getData(csvFile, name, fields):
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     serialization_maxmind()
     exit()
 

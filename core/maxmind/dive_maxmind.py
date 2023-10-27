@@ -9,7 +9,7 @@ from core.root import Root
 
 
 def diving_maxmind():
-#    mirroring_maxmind()
+    mirroring_maxmind()
     serialization_maxmind()
     processing_maxmind()
     merging_maxmind()
@@ -19,7 +19,7 @@ def diving_maxmind():
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     diving_maxmind()
     exit()

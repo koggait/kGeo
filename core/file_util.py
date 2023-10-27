@@ -1,38 +1,38 @@
+import sys
+import pathlib
+
 from core.root import Root
 
 
 def gen_specific_filename(filename, specific):
-    return filename + '_' + str(specific)
+    return '{}_{}'.format(filename, specific)
 
 
 def getfilename(url):
-    name = url.split('/')[-1]
-    return name
+    return pathlib.PurePosixPath(url).name
 
 
 def getname(url):
-    filename_extension = url.split('/')[-1]
-    name = filename_extension.split('.')[0]
-    return name
+    return pathlib.PurePosixPath(url).stem
 
 
 # generate directory path to data type
 def gen_file_extension(filename, extension):
-    return filename + '.' + extension
+    return '{}_{}'.format(filename, extension)
 
 
 # generate directory path to data type
 def gendir(path, directory):
-    return path + directory
+    return '{}/{}/'.format(path, directory)
 
 
 # generate directory path to data type
 def gen_data_dir(directory_type):
-    return Root.DATADIR + directory_type + '/'
+    return gendir(Root.DATADIR, directory_type)
 
 
 def gen_data_path_file(directory_type, filename):
-    return Root.DATADIR + directory_type + '/' + filename
+    return gen_data_dir(directory_type) + filename
 
 
 # generate file path to file with file ending

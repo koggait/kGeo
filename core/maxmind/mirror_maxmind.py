@@ -10,37 +10,36 @@ from core.root_util import print_state
 
 
 def mirroring_maxmind():
-    mirror_decode_file(Root.MAXASN, decompress_maxmind_archive)
-    mirror_decode_file(Root.MAXCOUNTRY, decompress_maxmind_archive)
+    mirror_decode_file(db_dataset=Root.MAXMIND[Root.ASN], decode_function=decompress_maxmind_archive)
+    mirror_decode_file(db_dataset=Root.MAXMIND[Root.COUNTRY], decode_function=decompress_maxmind_archive)
     print_state(Root.MIRROR, Root.END, Root.MAXMIND)
 
 
 def backup_mirroring_maxmind():
-    mirror_file(filename=Root.MAXASN)
-    mirror_file(filename=Root.MAXCOUNTRY)
+    mirror_file(db_dataset=Root.MAXMIND[Root.ASN])
+    mirror_file(db_dataset=Root.MAXMIND[Root.COUNTRY][Root.FILENAME])
 
 
-def mirror_file(filename):
-    mirrored_file = gen_data_path_file(Root.MIRRORED, filename)
-    getfile(Root.MIRROR_URLS[filename], mirrored_file)
-    decompress_maxmind_archive(compressed_archive=mirrored_file)
+def mirror_file(db_dataset):
+    getfile(url=db_dataset[Root.URL], output_file=gen_data_path_file(directory_type=Root.MIRRORED, filename=db_dataset[Root.FILENAME]))
+    decompress_maxmind_archive(compressed_archive=db_dataset[Root.FILENAME])
 
 
 def decompress_maxmind_archive(compressed_archive):
     import zipfile
     with zipfile.ZipFile(compressed_archive, 'r') as f:
-        print(f.namelist())
-        if Root.MAXASN in compressed_archive:
+        print('Decompress: ' + str(f.namelist()))
+        if Root.MAXMIND[Root.ASN][Root.FILENAME] in compressed_archive:
             RootRuntime.MAXASNLIST = [f.namelist()[2], f.namelist()[3]]
-            saveRootRuntime(1, 'MAXASNLIST = ' + str(RootRuntime.MAXASNLIST))
+            saveRootRuntime(1, 'MAXASNLIST = ' + str(RootRuntime .MAXASNLIST))
             mlist = RootRuntime.MAXASNLIST
-        elif Root.MAXCOUNTRY in compressed_archive:
+        elif Root.MAXMIND[Root.COUNTRY][Root.FILENAME] in compressed_archive:
             RootRuntime.MAXCOUNTRYLOCLIST = [f.namelist()[1]]
             saveRootRuntime(2, 'MAXCOUNTRYLOCLIST = ' + str(RootRuntime.MAXCOUNTRYLOCLIST))
             RootRuntime.MAXCOUNTRYLIST = [f.namelist()[6], f.namelist()[9]]
             saveRootRuntime(3, 'MAXCOUNTRYLIST = ' + str(RootRuntime.MAXCOUNTRYLIST))
             mlist = [RootRuntime.MAXCOUNTRYLOCLIST[0], RootRuntime.MAXCOUNTRYLIST[0], RootRuntime.MAXCOUNTRYLIST[1]]
-        elif RootRuntime.MAXCITY in compressed_archive:
+        elif Root.MAXMIND[Root.CITY][Root.FILENAME] in compressed_archive:
             RootRuntime.MAXCITYLOCLIST = [f.namelist()[0]]
             saveRootRuntime(4, 'MAXCITYLOCLIST = ' + str(RootRuntime.MAXCITYLOCLIST))
             RootRuntime.MAXCITYLIST = [f.namelist()[5], f.namelist()[12]]
@@ -52,8 +51,8 @@ def decompress_maxmind_archive(compressed_archive):
     print(mlist)
 
 def saveRootRuntime(no, content):
-    input_file = gen_file_extension(gendir(Root.COREDIR, Root.ROOTRUNTIME), Root.PY)
-    print(input_file)
+    import os
+    input_file = os.path.abspath(RootRuntime.RRPATH)
     with open(input_file, 'r') as file:
         lines = file.readlines()
     lines[no] = '   ' + content + '\n'
@@ -62,9 +61,8 @@ def saveRootRuntime(no, content):
 
 
 if __name__ == "__main__":
-    Root.COREDIR = '../'
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     mirroring_maxmind()
     exit()
 

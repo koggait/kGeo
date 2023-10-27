@@ -1,7 +1,7 @@
 import json
 
 from core.file_util import gen_data_dir
-from core.ip_util import ipv4_cidr_to_integer_count
+from core.ip_util import cidr_to_integer_count
 from core.ip_util import networks_intersect
 from core.root import Root
 from core.root_util import percent_done
@@ -196,12 +196,12 @@ def merge_asn_ip4(json1, net_name1, json2, net_name2, output):
     while i < len(js1):
         percent_done(i, ii)
         json_object1 = js1[i]
-        ip1, count1 = ipv4_cidr_to_integer_count(json_object1.get(net_name1))
+        ip1, count1 = cidr_to_integer_count(json_object1.get(net_name1), Root.IPV4)
         ip1end = ip1 + count1
 
         while j < len(js2):
             json_object2 = js2[j]
-            ip2, count2 = ipv4_cidr_to_integer_count(json_object2.get(net_name2))
+            ip2, count2 = cidr_to_integer_count(json_object2.get(net_name2), Root.IPV4)
             ip2end = ip2 + count2
 
             if ip1end < ip2:

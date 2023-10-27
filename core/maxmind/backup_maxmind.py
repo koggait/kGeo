@@ -11,13 +11,13 @@ def backuping_maxmind():
 
 def backup_data(name):
     json_file = gen_data_path_file(Root.PROCESSED, name)
-    directory = Root.MAXMIND
+    directory = Root.MAXMIND[Root.FILENAME]
     copy_to_history(json_file, directory, getname(name))
     print('maxmind stored')
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     backuping_maxmind()
     exit()

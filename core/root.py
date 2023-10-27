@@ -102,6 +102,41 @@ class Root:
     PY = 'py'
 
     # --------------------------------------------------
+    # REGEX
+    # --------------------------------------------------
+
+    NAME = 'Name'
+    FILENAME = 'Filename'
+    VER = 'Version'
+    DB = 'Database'
+
+    # --------------------------------------------------
+    # IP CONSTANTS
+    # --------------------------------------------------
+
+    ASN = 'ASN'
+    IP4 = 'IPv4'
+    IP6 = 'IPv6'
+    IPV4 = 4
+    IPV6 = 6
+    URL = 'URL'
+    FIELDS = 'Keys'
+    FIELDS_FILTER = 'KeysToRemove'
+
+
+
+    # --------------------------------------------------
+    # MAXMIND REGEX
+    # --------------------------------------------------
+
+    CITY = 'City'
+    COUNTRY = 'Country'
+    BLOCKS = 'Blocks'
+    LOCATIONS = 'Locations'
+    LOCATIONS_FIELDS = 'LocationKeys'
+    LOCATIONS_FIELDS_FILTER = 'LocationKeysToRemove'
+
+    # --------------------------------------------------
     # DICTIONARY KEYS
     # --------------------------------------------------
 
@@ -136,9 +171,6 @@ class Root:
     RIR_STATS_REDUCE_FIELDS = ['registry', 'type', 'date', 'status', 'obaque-id', 'extensions']
     RIR_STATS_REDUCE_OBJECTS = 'ZZ'  # cc
     RIR_STATS_DELIMITER = '|'
-    IP4 = 'ipv4'
-    IP6 = 'ipv6'
-    ASN = 'asn'
 
     # NRO
     NRO = 'nro'
@@ -418,47 +450,66 @@ class Root:
 
     MAXMIND_LICENSE_KEY = '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'
 
-    MAXMIND = 'maxmind'
+    MAXMIND_VERSION = 'GeoLite2'
+    MAXCITY = 'City-Blocks'
+    MAXCITYLOC = 'City-Locations'
+    MAXCOUNTRY = 'Country-Blocks'
+    MAXCOUNTRYLOC = 'Country-Locations'
+    MAXASN = 'ASN-Blocks'
 
-    MAXMIND4 = 'maxmind4'
-    MAXMIND4AS = 'maxmind4as'
+    MAXMIND_DB = {
+        MAXCITY: 'City-Blocks',
+        MAXCITYLOC: 'City-Locations',
+        MAXCOUNTRY: 'Country-Blocks',
+        MAXCOUNTRYLOC: 'Country-Locations',
+        MAXASN: 'ASN-Blocks'
+    }
 
-    MAXMIND6 = 'maxmind6'
-    MAXMIND6AS = 'maxmind6as'
-
-    MAXMINDCCREAL = 'maxmind_real_cc'
-    MAXMINDCCREG = 'maxmind_reg_cc'
-    MAXMINDCCREP = 'maxmind_rep_cc'
-
-    MAXASN = 'maxasn'
-    MAXASN_URL = 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN-CSV&license_key=' + MAXMIND_LICENSE_KEY + '&suffix=zip'
-    MAXASNFIELDS = ['network', 'autonomous_system_number', 'autonomous_system_organization']
-    MAXASN_REDUCE_FIELDS = []
-
-    MAXCITY = 'maxcity'
-    MAXCITY_URL = 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City-CSV&license_key=' + MAXMIND_LICENSE_KEY + '&suffix=zip'
-    MAXCITYFIELDS = ['network', 'geoname_id', 'registered_country_geoname_id', 'represented_country_geoname_id',
+    MAXMIND = {
+        NAME: 'maxmind',
+        VER: 'GeoLite2',
+        DB: {
+            MAXCITY: 'City-Blocks',
+            MAXCITYLOC: 'City-Locations',
+            MAXCOUNTRY: 'Country-Blocks',
+            MAXCOUNTRYLOC: 'Country-Locations',
+            MAXASN: 'ASN-Blocks'
+        },
+        ASN: {
+            FILENAME: 'Maxmind-ASN',
+            URL: 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN-CSV&license_key=' + MAXMIND_LICENSE_KEY + '&suffix=zip',
+            FIELDS: ['network', 'autonomous_system_number', 'autonomous_system_organization'],
+            FIELDS_FILTER: []
+        },
+        CITY: {
+            FILENAME: 'Maxmind-City',
+            URL: 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City-CSV&license_key=' + MAXMIND_LICENSE_KEY + '&suffix=zip',
+            FIELDS: ['network', 'geoname_id', 'registered_country_geoname_id', 'represented_country_geoname_id',
                      'is_anonymous_proxy', 'is_satellite_provider', 'postal_code', 'latitude', 'longitude',
-                     'accuracy_radius']
-    MAXCITY_REDUCE_FIELDS = []
+                     'accuracy_radius'],
+            FIELDS_FILTER: [],
+            LOCATIONS_FIELDS: ['geoname_id', 'locale_code', 'continent_code', 'continent_name', 'country_iso_code',
+                               'country_name', 'subdivision_1_iso_code', 'subdivision_1_name',
+                               'subdivision_2_iso_code',
+                               'subdivision_2_name', 'city_name', 'metro_code', 'time_zone', 'is_in_european_union'],
+            LOCATIONS_FIELDS_FILTER: []
+        },
+        COUNTRY: {
+            FILENAME: 'Maxmind-Country',
+            URL: 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=' + MAXMIND_LICENSE_KEY + '&suffix=zip',
+            FIELDS: ['network', 'geoname_id', 'registered_country_geoname_id', 'represented_country_geoname_id',
+                     'is_anonymous_proxy', 'is_satellite_provider'],
+            FIELDS_FILTER: ['is_anonymous_proxy', 'is_satellite_provider'],
+            LOCATIONS_FIELDS: ['geoname_id', 'locale_code', 'continent_code', 'continent_name', 'country_iso_code',
+                               'country_name', 'is_in_european_union'],
+            LOCATIONS_FIELDS_FILTER: ['locale_code', 'country_name', 'continent_code', 'continent_name',
+                                      'is_in_european_union']
+        }
+    }
 
-    MAXCITYLOC = 'maxcity_locations'
-    MAXCITYLOCFIELDS = ['geoname_id', 'locale_code', 'continent_code', 'continent_name', 'country_iso_code',
-                        'country_name', 'subdivision_1_iso_code', 'subdivision_1_name', 'subdivision_2_iso_code',
-                        'subdivision_2_name', 'city_name', 'metro_code', 'time_zone', 'is_in_european_union']
-    MAXCITYLOC_REDUCE_FIELDS = []
-
-    MAXCOUNTRY = 'maxcountry'
-    MAXCOUNTRY_URL = 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=' + MAXMIND_LICENSE_KEY + '&suffix=zip'
-    MAXCOUNTRYFIELDS = ['network', 'geoname_id', 'registered_country_geoname_id', 'represented_country_geoname_id',
-                        'is_anonymous_proxy', 'is_satellite_provider']
-    MAXCOUNTRYP_REDUCE_FIELDS = ['is_anonymous_proxy', 'is_satellite_provider']
-
-    MAXCOUNTRYLOC = 'maxcountry_locations'
-    MAXCOUNTRYLOCFIELDS = ['geoname_id', 'locale_code', 'continent_code', 'continent_name', 'country_iso_code',
-                           'country_name', 'is_in_european_union']
-    MAXCOUNTRYLOC_REDUCE_FIELDS = ['locale_code', 'country_name', 'continent_code', 'continent_name',
-                                   'is_in_european_union']
+    MAXMIND_NAME_LIST = ['GeoLite2-ASN-Blocks-IPv4', 'GeoLite2-ASN-Blocks-IPv6', 'GeoLite2-Country-Blocks-IPv4',
+                         'GeoLite2-Country-Blocks-IPv6', 'GeoLite2-Country-Locations-de', 'maxmind_real_cc.json',
+                         'maxmind_reg_cc.json', 'maxmind_rep_cc.json']
 
     MAXMIND_NAME_LIST = ['GeoLite2-ASN-Blocks-IPv4', 'GeoLite2-ASN-Blocks-IPv6', 'GeoLite2-Country-Blocks-IPv4',
                          'GeoLite2-Country-Blocks-IPv6', 'GeoLite2-Country-Locations-de', 'maxmind_real_cc.json',
@@ -472,6 +523,12 @@ class Root:
     MAXMIND_FINAL_IP4 = ['maxmind_real_cc_ip4.json', 'maxmind_reg_cc_ip4.json', 'maxmind_rep_cc_ip4.json']
     MAXMIND_FINAL_IP6 = ['maxmind_real_cc_ip6.json', 'maxmind_reg_cc_ip6.json', 'maxmind_rep_cc_ip6.json']
     MAXMIND_FINAL_AS = ['maxmind_as_ip4.json', 'maxmind_as_ip6.json']
+
+    def MAXMIND_PATH(DB, DATASET, IPV):
+        return '{}-{}-{}'.format(DB, DATASET, IPV)
+    # DB: MAXMIND_NAME
+    # DATASET: ASN|CITY|COUNTRY-Blocks
+    # IPV: IP4|IP6
 
     # --------------------------------------------------
     # FILENAME : MIRROR URL
@@ -525,3 +582,4 @@ class Root:
     # --------------------------------------------------
     # END
     # --------------------------------------------------
+

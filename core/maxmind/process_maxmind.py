@@ -10,8 +10,8 @@ from core.root_runtime import RootRuntime
 def processing_maxmind():
     maxasn = [Root.MAXMIND_NAME_LIST[0], Root.MAXMIND_NAME_LIST[1]]
     reduce_keys(maxasn, [])
-    reduce_keys(RootRuntime.MAXCOUNTRYLIST, Root.MAXCOUNTRYP_REDUCE_FIELDS)
-    reduce_keys(RootRuntime.MAXCOUNTRYLOCLIST, Root.MAXCOUNTRYLOC_REDUCE_FIELDS)
+    reduce_keys(RootRuntime.MAXCOUNTRYLIST, Root.MAXMIND[Root.COUNTRY][Root.FIELDS_FILTER])
+    reduce_keys(RootRuntime.MAXCOUNTRYLOCLIST, Root.MAXMIND[Root.COUNTRY][Root.LOCATIONS_FIELDS_FILTER])
     print('data preprocessed')
 
 
@@ -28,8 +28,8 @@ def reduce_keys(mmList, keys_to_delete):
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     processing_maxmind()
     exit()
 

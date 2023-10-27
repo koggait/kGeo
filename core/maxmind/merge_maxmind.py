@@ -1,10 +1,8 @@
 from core.file_util import gen_data_dir
-from core.ip_util import ipv4_cidr_to_integer_count
-from core.ip_util import ipv6_cidr_to_integer_count
+from core.ip_util import cidr_to_integer_count
 from core.ip_util import networks_intersect
 from core.json_util import json_to_dict
 from core.json_util import jsonfiles_2_dicts
-from core.json_util import save_to_jsonfile
 from core.root import Root
 from core.root_util import percent_done
 
@@ -31,12 +29,12 @@ def merge_asn_ip4(json1, json2, output):
     while i < len(js1):
         percent_done(i, ii)
         json_object1 = js1[i]
-        ip1, count1 = ipv4_cidr_to_integer_count(json_object1.get('network'))
+        ip1, count1 = cidr_to_integer_count(json_object1.get('network'), Root.IPV4)
         ip1end = ip1 + count1
 
         while j < len(js2):
             json_object2 = js2[j]
-            ip2, count2 = ipv4_cidr_to_integer_count(json_object2.get('network'))
+            ip2, count2 = cidr_to_integer_count(json_object2.get('network'), Root.IPV4)
             ip2end = ip2 + count2
 
             if ip1end < ip2:
@@ -89,12 +87,12 @@ def merge_asn_ip6(json1, json2, output):
         percent_done(i, ii)
 
         json_object1 = js1[i]
-        ip1, count1 = ipv6_cidr_to_integer_count(json_object1.get('network'))
+        ip1, count1 = cidr_to_integer_count(json_object1.get('network'), Root.IPV6)
         ip1end = ip1 + count1
 
         while j < len(js2):
             json_object2 = js2[j]
-            ip2, count2 = ipv6_cidr_to_integer_count(json_object2.get('network'))
+            ip2, count2 = cidr_to_integer_count(json_object2.get('network'), Root.IPV6)
             ip2end = ip2 + count2
 
             if ip1end < ip2:
@@ -176,8 +174,8 @@ def merge_ip_location(json1, json2, output):
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     merging_maxmind()
     exit()
 

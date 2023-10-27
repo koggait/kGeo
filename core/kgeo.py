@@ -1,10 +1,7 @@
-import sys
-
-from core.root import Root
 from cli.controller import control
 
 if __name__ == "__main__":
-    Root.DATADIR = 'data/'
-    Root.HISTORYDIR = 'history/'
+    import sys
+    sys.path.append('/kGeo')
     control(sys.argv)
     exit()

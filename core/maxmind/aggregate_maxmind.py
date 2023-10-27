@@ -27,19 +27,19 @@ def aggregate_as_data(data, output_file):
         percent_done(i, ii)
         i = i + 1
         for key in json_object:
-            if key == Root.MAXASNFIELDS[1]:
+            if key == Root.MAXMIND[Root.ASN][Root.FIELDS][1]:
                 if int(json_object[key]) not in json_list:
                     dic = {}
 
                     # autonomous_system_number = NUMBER
-                    dic[Root.MAXASNFIELDS[1]] = json_object[key]
+                    dic[Root.MAXMIND[Root.ASN][Root.FIELDS][1]] = json_object[key]
                     # autonomous_system_organization = NAME
-                    dic[Root.MAXASNFIELDS[2]] = json_object[Root.MAXASNFIELDS[2]]
+                    dic[Root.MAXMIND[Root.ASN][Root.FIELDS][2]] = json_object[Root.MAXMIND[Root.ASN][Root.FIELDS][2]]
                     dic[NETWORKS] = []
 
                     net_dic = {}
                     # network = NETWORK
-                    net_dic[Root.MAXASNFIELDS[0]] = json_object[Root.MAXASNFIELDS[0]]
+                    net_dic[Root.MAXMIND[Root.ASN][Root.FIELDS][0]] = json_object[Root.MAXMIND[Root.ASN][Root.FIELDS][0]]
                     # subnets = [{subnets}]
                     net_dic[SUBNETS] = json_object[SUBNETS]
 
@@ -50,7 +50,7 @@ def aggregate_as_data(data, output_file):
                 else:
                     net_dic = {}
                     # network = NETWORK
-                    net_dic[Root.MAXASNFIELDS[0]] = json_object[Root.MAXASNFIELDS[0]]
+                    net_dic[Root.MAXMIND[Root.ASN][Root.FIELDS][0]] = json_object[Root.MAXMIND[Root.ASN][Root.FIELDS][0]]
                     # subnets = [{subnets}]
                     net_dic[SUBNETS] = json_object[SUBNETS]
                     json_list[int(json_object[key])][NETWORKS].append(net_dic)
@@ -62,7 +62,7 @@ def aggregate_as_data(data, output_file):
 
 
 if __name__ == "__main__":
-    Root.DATADIR = '../data/'
-    Root.HISTORYDIR = '../history/'
+    import sys
+    sys.path.append('/kGeo')
     aggregation_maxmind()
     exit()
