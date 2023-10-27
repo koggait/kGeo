@@ -10,11 +10,11 @@ from cli.control_util import diving_ipinfo
 from cli.control_util import diving_ipmap
 from cli.control_util import diving_maxmind
 from cli.control_util import diving_analysis
+from cli.control_util import diving_local
 from cli.control_util import diving_data
 from cli.control_util import mirror_data
 from cli.control_util import serialize_data
 from cli.control_util import backup_data
-from cli.control_util import analize_data
 
 def control(argv):
     parser = argparse.ArgumentParser(prog='kGeo 1.3 RC',
@@ -28,7 +28,9 @@ def control(argv):
 
     # Add operation arguments
     parser.add_argument('-a', '--analysis', action='store_true', help='Run analysis related functions.')
-    parser.add_argument('-d', '--daily', action='store_true',help='Run all mirroring, serialization and backup related functions.')
+    parser.add_argument('-d', '--daily', action='store_true', help='Run all mirroring, serialization and backup related functions.')
+    parser.add_argument('-l', '--local', action='store_true', help='Skip mirroring and run all functions on local mirrored files.')
+
     # Add specific option arguments
     parser.add_argument('-as', '--asnames', action='store_true', help='Operate on asnames data.')
     parser.add_argument('-bgp', '--bgptable', action='store_true', help='Operate on BGP table data.')
@@ -48,6 +50,7 @@ def control(argv):
     else:
         if args.analysis: diving_analysis()
         if args.daily: mirror_data(), serialize_data(), backup_data()
+        if args.local: diving_local()
         if args.asnames: diving_asnames()
         if args.ip2loc: diving_ip2loc()
         if args.ipinfo: diving_ipinfo()

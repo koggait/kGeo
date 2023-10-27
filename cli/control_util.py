@@ -73,6 +73,13 @@ def diving_phases():
     diving_analysis()
 
 
+def diving_local():
+    serialize_data()
+    backup_data()
+    process_data()
+    diving_analysis()
+
+
 def diving_data():
     diving_rir()
     diving_asnames()
