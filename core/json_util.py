@@ -1,10 +1,12 @@
 import json
 
-from core.file_util import gen_data_dir
-from core.ip_util import cidr_to_integer_count
+from core.file_util import gen_data_dir, gen_specific_filename
+from core.ip_util import cidr_to_integer_count, networks_match
+from core.ip_util import ip_count_to_cidr
+from core.ip_util import ip_to_integer
 from core.ip_util import networks_intersect
 from core.root import Root
-from core.root_util import percent_done
+from core.root_util import percent_done, log_action
 
 
 def split_line(line, delimiter):
@@ -181,6 +183,213 @@ def aggregate_by_cc(data, cc_key):
     return sorted_dict  # Rückgabe des Ausgabe-Dictionaries
 
 
+def filter_keys(input_data, keys_to_delete, output_file):
+    data = keep_specific_keys(input_data, keys_to_delete)
+    save_to_jsonfile(data, output_file)
+
+def reduce_keys(input_data, keys_to_delete, output_file):
+    data = delete_specific_keys(input_data, keys_to_delete)
+    save_to_jsonfile(data, output_file)
+
+def aggregate_key(input_data, key, output_file):
+    data = aggregate_by_cc(input_data, key)
+    save_to_jsonfile(data, output_file)
+
+def order_key(input_data, key, output_file):
+    data = transform_key_to_primary(input_data,key)
+    save_to_jsonfile(data, output_file)
+
+
+def merge_json_by_ip(js1, js2, output, ipv):
+    import json
+
+    dic = []
+    unmatched = []
+
+    i = 0
+    ii = len(js1)
+    j = 0
+    while i < len(js1):
+        percent_done(i, ii)
+        json_object1 = js1[i]
+        ip1, count1 = cidr_to_integer_count(json_object1.get('network'), ipv)
+        ip1end = ip1 + count1
+
+        while j < len(js2):
+            json_object2 = js2[j]
+            ip2, count2 = cidr_to_integer_count(json_object2.get('network'), ipv)
+            ip2end = ip2 + count2
+
+            if ip1end < ip2:
+                j = 0
+                break
+
+
+            if networks_intersect(network_start=ip1, network_end=ip1end, subnet_start=ip2, subnet_end=ip2end):
+                dic.append(js2.pop(j))
+            else:
+                j = j + 1
+
+        j = 0
+        js1[i]['subnets'] = dic
+        dic = []
+        i = i + 1
+
+    if len(js2) > 0:
+        unmatched.append(js2.pop())
+    output_file = gen_data_dir(Root.ACCUMULATED) + output
+
+    # Write the modified JSON objects to the output file
+    with open(gen_data_dir(Root.ACCUMULATED) + 'Subnets_unmatched' + ipv, 'w') as f:
+        json.dump(unmatched, f, indent=2)
+
+    print('Saved File: ' + 'Subnets_unmatched')
+
+    with open(output_file, 'w') as f:
+        json.dump(js1, f, indent=2)
+
+    print('Saved File: ' + output_file)
+
+
+def merge_rir_max_ip(js1, js2, output, ipv):
+    import json
+
+    maxmind = Root.MAXMIND[Root.NAME]
+    matched_dict = {}
+    unmatched_list = []
+
+    i = 0
+    ii = len(js1)
+    j = 0
+
+    while i < len(js1):
+        percent_done(i, ii)
+
+        json_object1 = js1[i]
+
+        if ipv == 4:
+            ip4 = json_object1[Root.START]
+            ip1 = ip_to_integer(ip4, ipv)
+            count1 = json_object1[Root.VALUE]
+        elif ipv == 6:
+            ip1, count1 = cidr_to_integer_count(ip_count_to_cidr(json_object1.get(Root.START), json_object1.get(Root.VALUE)), ipv)
+
+        ip1end = ip1 + int(count1) - 1
+
+        matched_dict[Root.CC_GEO_LIST] = []
+        matched_dict[Root.CC_REG_LIST] = []
+        matched_dict[Root.CC_REP_LIST] = []
+
+        while j < len(js2):
+            json_object2 = js2[j]
+            ip2, count2 = cidr_to_integer_count(json_object2[Root.NET], ipv)
+            ip2end = ip2 + int(count2) -1
+
+            if ip1end < ip2:
+                break
+
+            if ip2end < ip1:
+                unmatched_list.append(js2.pop(j))
+
+            if networks_match(ip1, ip1end, ip2, ip2end):
+
+                matched_object = js2.pop(j)
+                if Root.NET in matched_dict.keys():
+                    matched_dict[Root.NET].append(matched_object[Root.NET])
+                else:
+                    matched_dict[Root.NET] = []
+                    matched_dict[Root.NET].append(matched_object[Root.NET])
+
+                matched_dict[Root.CC_GEO] = matched_object[Root.CC]
+                matched_dict[Root.CC_REG] = matched_object[Root.CC_REG]
+                matched_dict[Root.CC_REP] = matched_object[Root.CC_REP]
+
+                matched_dict[Root.CC_GEO_LIST].append(matched_object[Root.CC])
+                matched_dict[Root.CC_REG_LIST].append(matched_object[Root.CC_REG])
+                matched_dict[Root.CC_REP_LIST].append(matched_object[Root.CC_REP])
+
+            else:
+                j = j + 1
+
+        maxmind_dict = {maxmind: matched_dict}
+        js1[i].update(maxmind_dict)
+        matched_dict = {}
+        j = 0
+        i = i + 1
+
+    if len(js2) > 0:
+        unmatched_list.append(js2.pop())
+
+    # Write the modified JSON objects to the output file
+    unmatched_output = gen_specific_filename(output, Root.UNMATCHED)
+    with open(unmatched_output, 'w') as f:
+        json.dump(unmatched_list, f, indent=2)
+
+    log_action(Root.SAVED, unmatched_output)
+
+    with open(output, 'w') as f:
+        json.dump(js1, f, indent=2)
+
+    log_action(Root.SAVED, output)
+
+
+
+'''def merge_rir_ip_max_ip(js1, js2, output, ipv):
+    import json
+
+    dic = []
+    unmatched = []
+
+    i = 0
+    ii = len(js1)
+    j = 0
+    while i < len(js1):
+        percent_done(i, ii)
+        json_object1 = js1[i]
+
+        if ipv == 4:
+            ip4 = json_object1['start']
+            ip1 = ip_to_integer(ip4, ipv)
+            count1 = json_object1['value']
+            ip1end = ip1 + int(count1) - 1
+        elif ipv == 6:
+            ip1, count1 = cidr_to_integer_count(json_object1.get('start') + '/' + json_object1.get('value'), ipv)
+            ip1end = ip1 + int(count1) - 1
+
+        while j < len(js2):
+            json_object2 = js2[j]
+            ip2, count2 = cidr_to_integer_count(json_object2.get('network'), ipv)
+            ip2end = ip2 + count2
+
+            if ip1end < ip2: break
+
+            if networks_match(ip1, ip1end, ip2, ip2end):
+                dic.append(js2.pop(j))
+            else:
+                j = j + 1
+
+        j = 0
+        js1[i]['subnets'] = dic
+        dic = []
+        i = i + 1
+
+    if len(js2) > 0:
+        unmatched.append(js2.pop())
+    output_file = gen_data_dir(Root.ACCUMULATED) + output
+
+    # Write the modified JSON objects to the output file
+    with open(gen_data_dir(Root.ACCUMULATED) + Root.UNMATCHED + str(ipv), 'w') as f:
+        json.dump(unmatched, f, indent=2)
+
+    print('Saved File: ' + 'Subnets_unmatched')
+
+    with open(output_file, 'w') as f:
+        json.dump(js1, f, indent=2)
+
+    print('Saved File: ' + output_file)
+'''
+
+'''
 def merge_asn_ip4(json1, net_name1, json2, net_name2, output):
     import json
 
@@ -236,22 +445,4 @@ def merge_asn_ip4(json1, net_name1, json2, net_name2, output):
 
     print('Saved File: ' + output_file)
 
-
-def filter_keys(input_data, keys_to_delete, output_file):
-    data = keep_specific_keys(input_data, keys_to_delete)
-    save_to_jsonfile(data, output_file)
-
-def reduce_keys(input_data, keys_to_delete, output_file):
-    data = delete_specific_keys(input_data, keys_to_delete)
-    save_to_jsonfile(data, output_file)
-
-def aggregate_key(input_data, key, output_file):
-    data = aggregate_by_cc(input_data, key)
-    save_to_jsonfile(data, output_file)
-
-def order_key(input_data, key, output_file):
-    data = transform_key_to_primary(input_data,key)
-    save_to_jsonfile(data, output_file)
-
-
-
+'''

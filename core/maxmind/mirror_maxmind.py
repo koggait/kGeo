@@ -25,6 +25,11 @@ def mirror_file(db_dataset):
     decompress_maxmind_archive(compressed_archive=db_dataset[Root.FILENAME])
 
 
+def mirror_decode_file(db_dataset, decode_function):
+    getfile(db_dataset[Root.URL], gen_data_path_file(Root.MIRRORED, db_dataset[Root.FILENAME]))
+    return decode_function(gen_data_path_file(Root.MIRRORED, db_dataset[Root.FILENAME]))
+
+
 def decompress_maxmind_archive(compressed_archive):
     import zipfile
     with zipfile.ZipFile(compressed_archive, 'r') as f:

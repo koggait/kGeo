@@ -22,6 +22,18 @@ def print_state(phase, state, text):
     print(phase + ' ' + state + ' ' + str(text))
 
 
+def log_begin(action, entity):
+    print('START {}: {}'.format(action, entity))
+
+
+def log_end(action, entity):
+    print('COMPLETED {}: {}'.format(action, entity))
+
+
+def log_action(action, entity):
+    print('{}: {}'.format(action, entity))
+
+
 def copy_serialized_mirror(filename):
     import shutil
     origin_file = gen_data_path_extension(Root.MIRRORED, filename, Root.JSON)

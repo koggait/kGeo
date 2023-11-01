@@ -6,12 +6,12 @@ from core.root_util import print_state
 
 
 def mirroring_ip2loc():
-    mirror_file(filename=Root.IP2LOC4)
-    mirror_file(filename=Root.IP2LOC6)
+    mirroring(filename=Root.IP2LOC4)
+    mirroring(filename=Root.IP2LOC6)
     print_state(Root.MIRROR, Root.END, Root.IP2LOC)
 
 
-def mirror_file(filename):
+def mirroring(filename):
     mirrored_file = gen_data_path_file(Root.MIRRORED, filename)
     getfile(Root.MIRROR_URLS[filename], mirrored_file)
     decompress_ip2loc_archive(compressed_archive=mirrored_file)

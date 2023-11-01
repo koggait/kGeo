@@ -1,6 +1,6 @@
 from core.file_util import gen_data_dir
 from core.root import Root
-from core.root_util import print_state
+from core.root_util import print_state, percent_done
 
 
 def serialization_ipmap():
@@ -26,14 +26,13 @@ def serialize_data(filename, name):
 
     with open(filename, 'rb') as file:
 
-        xLen = len(lines)
-        x = 0
+        i = 0
+        ii = len(lines)
 
         for line in file:
 
-            x = x + 1
-            y = xLen - x
-            print('Lines Left: ' + str(y))
+            i = i + 1
+            percent_done(i, ii)
 
             description = []
             # reading line by line from core.the text file

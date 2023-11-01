@@ -4,6 +4,10 @@ from core.root import Root
 
 
 def backuping_bgptable():
+    json_file = gen_data_path_extension(Root.PROCESSED, Root.BGPTABLE4, Root.JSON)
+    directory = Root.BGPTABLE
+    filename = Root.BGPTABLE4
+    copy_to_history(json_file, directory, filename)
     bgptable4 = gen_data_path_extension(Root.PROCESSED, Root.BGPTABLE4, Root.JSON)
     bgptable6 = gen_data_path_extension(Root.PROCESSED, Root.BGPTABLE6, Root.JSON)
     copy_to_history(bgptable4, Root.BGPTABLE, Root.BGPTABLE4)

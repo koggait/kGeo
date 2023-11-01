@@ -9,6 +9,16 @@ from cli.control_util import diving_ip2loc
 from cli.control_util import diving_ipinfo
 from cli.control_util import diving_ipmap
 from cli.control_util import diving_maxmind
+from cli.control_util import diving_local_peeringdb
+from cli.control_util import diving_local_rir
+from cli.control_util import diving_local_riswhois
+from cli.control_util import diving_local_asnames
+from cli.control_util import diving_local_bgptable
+from cli.control_util import diving_local_ip2loc
+from cli.control_util import diving_local_ipinfo
+from cli.control_util import diving_local_ipmap
+from cli.control_util import diving_local_maxmind
+
 from cli.control_util import diving_analysis
 from cli.control_util import diving_local
 from cli.control_util import diving_data
@@ -17,7 +27,7 @@ from cli.control_util import serialize_data
 from cli.control_util import backup_data
 
 def control(argv):
-    parser = argparse.ArgumentParser(prog='kGeo 1.3 RC',
+    parser = argparse.ArgumentParser(prog='kGeo v0.1.5',
                                      add_help='Run kGeo.py with arguments to specify which operations will be executed.'
                                               'Running it without arguments will lead to execution of all core functions.'
                                               'To run the Daily-Mirror use --daily or handle specific dataset with other arguments.'
@@ -49,14 +59,36 @@ def control(argv):
         diving_data()
     else:
         if args.analysis: diving_analysis()
-        if args.daily: mirror_data(), serialize_data(), backup_data()
-        if args.local: diving_local()
-        if args.asnames: diving_asnames()
-        if args.ip2loc: diving_ip2loc()
-        if args.ipinfo: diving_ipinfo()
-        if args.riswhois: diving_riswhois()
-        if args.ipmap: diving_ipmap()
-        if args.rir: diving_rir()
-        if args.bgptable: diving_bgptable()
-        if args.maxmind: diving_maxmind()
-        if args.peeringdb: diving_peeringdb()
+        if args.daily:
+            mirror_data(), serialize_data(), backup_data()
+        if args.local:
+            if len(argv) == 2:
+                diving_local()
+            if args.asnames:
+                diving_local_asnames()
+            if args.ip2loc:
+                diving_local_ip2loc()
+            if args.ipinfo:
+                diving_local_ipinfo()
+            if args.riswhois:
+                diving_local_riswhois()
+            if args.ipmap:
+                diving_local_ipmap()
+            if args.rir:
+                diving_local_rir()
+            if args.bgptable:
+                diving_local_bgptable()
+            if args.maxmind:
+                diving_local_maxmind()
+            if args.peeringdb:
+                diving_local_peeringdb()
+        else:
+            if args.asnames: diving_asnames()
+            if args.ip2loc: diving_ip2loc()
+            if args.ipinfo: diving_ipinfo()
+            if args.riswhois: diving_riswhois()
+            if args.ipmap: diving_ipmap()
+            if args.rir: diving_rir()
+            if args.bgptable: diving_bgptable()
+            if args.maxmind: diving_maxmind()
+            if args.peeringdb: diving_peeringdb()

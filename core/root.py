@@ -22,7 +22,10 @@ class Root:
     MERGE = 'merge'
 
     ANALYSE = 'analyse'
+    RELATE = 'relate'
     VISUALIZE = 'visualize'
+
+    SAVED = 'File saved: '
 
     PHASES = {
         MIRROR: 'mirror',
@@ -42,6 +45,7 @@ class Root:
         MERGE: 'merge',
 
         ANALYSE: 'analyse',
+        RELATE: 'relate',
         VISUALIZE: 'visualize'
     }
 
@@ -109,19 +113,25 @@ class Root:
     FILENAME = 'Filename'
     VER = 'Version'
     DB = 'Database'
+    NET = 'network'
 
     # --------------------------------------------------
     # IP CONSTANTS
     # --------------------------------------------------
 
-    ASN = 'ASN'
-    IP4 = 'IPv4'
-    IP6 = 'IPv6'
-    IPV4 = 4
-    IPV6 = 6
+    ASN = 'asn'
+    IPV = {}
+    RIR_IPV4 = 'ipv4'
+    RIR_IPV6 = 'ipv6'
+    IP_4 = 'IPv4'
+    IP_6 = 'IPv6'
+    IP_VER_4 = 4
+    IP_VER_6 = 6
     URL = 'URL'
     FIELDS = 'Keys'
     FIELDS_FILTER = 'KeysToRemove'
+
+    UNMATCHED = 'Unmatched'
 
 
 
@@ -141,6 +151,12 @@ class Root:
     # --------------------------------------------------
 
     CC = 'cc'
+    CC_GEO = 'geo_cc'
+    CC_REG = 'reg_cc'
+    CC_REP = 'rep_cc'
+    CC_GEO_LIST = 'geo-cc-list'
+    CC_REG_LIST = 'reg-cc-list'
+    CC_REP_LIST = 'rep-cc-list'
     COUNTRY = 'country'
     TYPE = 'type'
     START = 'start'
@@ -176,7 +192,7 @@ class Root:
     NRO = 'nro'
     NRO4 = 'nro_ipv4'
     NRO6 = 'nro_ipv6'
-    NROASN = 'nro_asn'
+    NROASN = 'nro_ASN'
     NRO4BAD = 'bad_nro4'
     NRO6BAD = 'bad_nro6'
     NROASNBAD = 'bad_nro_asn'
@@ -448,6 +464,8 @@ class Root:
     # MAXMIND
     # --------------------------------------------------
 
+
+
     MAXMIND_LICENSE_KEY = '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'
 
     MAXMIND_VERSION = 'GeoLite2'
@@ -466,7 +484,7 @@ class Root:
     }
 
     MAXMIND = {
-        NAME: 'maxmind',
+        NAME: 'Maxmind',
         VER: 'GeoLite2',
         DB: {
             MAXCITY: 'City-Blocks',
@@ -511,11 +529,7 @@ class Root:
                          'GeoLite2-Country-Blocks-IPv6', 'GeoLite2-Country-Locations-de', 'maxmind_real_cc.json',
                          'maxmind_reg_cc.json', 'maxmind_rep_cc.json']
 
-    MAXMIND_NAME_LIST = ['GeoLite2-ASN-Blocks-IPv4', 'GeoLite2-ASN-Blocks-IPv6', 'GeoLite2-Country-Blocks-IPv4',
-                         'GeoLite2-Country-Blocks-IPv6', 'GeoLite2-Country-Locations-de', 'maxmind_real_cc.json',
-                         'maxmind_reg_cc.json', 'maxmind_rep_cc.json']
-
-    MAXMIND_MERG_NAME_LIST = ['GeoLite2-Country-Location-IPv4.json', 'GeoLite2-Country-Location-IPv6.json',
+    MAXMIND_MERG_NAME_LIST = ['GeoLite2-Country-Locations-IPv4.json', 'GeoLite2-Country-Locations-IPv6.json',
                               'Maxmind-ASN-IP-CC-IPv4.json', 'Maxmind-ASN-IP-CC-IPv6.json']
 
     MAXMIND_AGGREGATED = ['Maxmind_IPv4.json', 'Maxmind_IPv6.json']
@@ -523,12 +537,6 @@ class Root:
     MAXMIND_FINAL_IP4 = ['maxmind_real_cc_ip4.json', 'maxmind_reg_cc_ip4.json', 'maxmind_rep_cc_ip4.json']
     MAXMIND_FINAL_IP6 = ['maxmind_real_cc_ip6.json', 'maxmind_reg_cc_ip6.json', 'maxmind_rep_cc_ip6.json']
     MAXMIND_FINAL_AS = ['maxmind_as_ip4.json', 'maxmind_as_ip6.json']
-
-    def MAXMIND_PATH(DB, DATASET, IPV):
-        return '{}-{}-{}'.format(DB, DATASET, IPV)
-    # DB: MAXMIND_NAME
-    # DATASET: ASN|CITY|COUNTRY-Blocks
-    # IPV: IP4|IP6
 
     # --------------------------------------------------
     # FILENAME : MIRROR URL
@@ -555,10 +563,6 @@ class Root:
 
         PEERINGDB: PEERINGDB_URL,
 
-        MAXASN: MAXASN_URL,
-        MAXCITY: MAXCITY_URL,
-        MAXCOUNTRY: MAXCOUNTRY_URL,
-
         IP2LOC4: IP2LOC4_URL,
         IP2LOC6: IP2LOC6_URL,
         IP2PROXY4: IP2PROXY4_URL,
@@ -583,3 +587,8 @@ class Root:
     # END
     # --------------------------------------------------
 
+def MAXMIND_PATH(DB, DATASET, IPVER):
+    return '{}-{}-{}'.format(DB, DATASET, IPVER)
+    # DB: MAXMIND_NAME
+    # DATASET: ASN|CITY|COUNTRY-Blocks
+    # IPVER: IP4|IP6

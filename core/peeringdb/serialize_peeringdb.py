@@ -11,7 +11,7 @@ from core.root_util import print_state
 def serialization_peeringdb():
     file = gen_data_dir(Root.MIRRORED) + Root.PEERINGDB
     data = read_from_jsonfile(file)
-    save_to_jsonfile(data, gen_data_path_file(Root.SERIALIZED, gen_file_extension(Root.PEERINGDB, Root.JSON)))
+    save_to_jsonfile(data['data'], gen_data_path_file(Root.SERIALIZED, gen_file_extension(Root.PEERINGDB, Root.JSON)))
     print_state(Root.SERIALIZE, Root.END, Root.PEERINGDB)
 
 

@@ -11,7 +11,7 @@ def backuping_maxmind():
 
 def backup_data(name):
     json_file = gen_data_path_file(Root.PROCESSED, name)
-    directory = Root.MAXMIND[Root.FILENAME]
+    directory = Root.MAXMIND[Root.NAME]
     copy_to_history(json_file, directory, getname(name))
     print('maxmind stored')
 

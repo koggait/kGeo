@@ -6,6 +6,7 @@ from core.root_util import percent_done
 
 
 def merging_data():
+
     asnames = gen_data_path_extension(Root.SERIALIZED, Root.ASNAMES, Root.JSON)         # as-names-sebastian
     asnames_json_data = read_from_jsonfile(asnames)
 

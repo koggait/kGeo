@@ -12,7 +12,7 @@ def backuping_rir():
 
 
 def split_stats_name(name):
-    return gen_specific_filename(name, Root.IP4), gen_specific_filename(name, Root.IP6), gen_specific_filename(name,
+    return gen_specific_filename(name, Root.IP_VER_4), gen_specific_filename(name, Root.IP_VER_6), gen_specific_filename(name,
                                                                                                                Root.ASN)
 
 

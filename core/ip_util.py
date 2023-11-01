@@ -1,3 +1,4 @@
+
 def cidr_to_ip_suffix(cidr):
     ip = cidr.split('/')[0]
     suffix = cidr.split('/')[1]
@@ -46,15 +47,18 @@ def ip_to_integer(ip, ipv):
     return value
 
 
-def cidr_to_integer_count(cidr, ipv):
+def   cidr_to_integer_count(cidr, ipv):
     ip, suffix = cidr_to_ip_suffix(cidr)
     value = ip_to_integer(ip, ipv)
     count = cidr_suffix_to_count(suffix, ipv)
     return value, count
 
+def ip_count_to_cidr(ip, count):
+    return '{}/{}'.format(ip, count)
+
 
 def integer_ip_count_to_startip_endip(ip, count):
-    return ip, ip + count
+    return ip, int(ip) + int(count)
 
 
 def networks_intersect(network_start, network_end, subnet_start, subnet_end):
@@ -66,8 +70,15 @@ def networks_intersect(network_start, network_end, subnet_start, subnet_end):
         return False
 
 
+def networks_match(ip1, ip1end, ip2, ip2end):
+    return networks_intersect(network_start=ip1, network_end=ip1end, subnet_start=ip2,
+                              subnet_end=ip2end) or networks_intersect(network_start=ip2, network_end=ip2end,
+                                                                       subnet_start=ip1, subnet_end=ip1end)
+
+
 def drop_asn(asn_ip_end, network_ip_start):
     if asn_ip_end < network_ip_start:
         return True
     else:
         return False
+

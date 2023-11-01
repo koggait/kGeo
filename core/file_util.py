@@ -8,6 +8,10 @@ def gen_specific_filename(filename, specific):
     return '{}_{}'.format(filename, specific)
 
 
+def gen_merge_filename(filename1, filename2, specific):
+    return '{}_{}_{}'.format(filename1, filename2, specific)
+
+
 def getfilename(url):
     return pathlib.PurePosixPath(url).name
 
@@ -18,7 +22,7 @@ def getname(url):
 
 # generate directory path to data type
 def gen_file_extension(filename, extension):
-    return '{}_{}'.format(filename, extension)
+    return '{}.{}'.format(filename, extension)
 
 
 # generate directory path to data type

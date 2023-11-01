@@ -48,10 +48,10 @@ def split_reduce_objects(name, key, value):
 
 
 def slice_rir_data(filename):
-    rir4 = gen_specific_filename(filename=filename, specific=Root.IP4)
+    rir4 = gen_specific_filename(filename=filename, specific=Root.IP_VER_4)
     json_file = gen_data_path_extension(Root.SERIALIZED, rir4, Root.JSON)
     data4 = read_from_jsonfile(json_file)
-    rir6 = gen_specific_filename(filename=filename, specific=Root.IP6)
+    rir6 = gen_specific_filename(filename=filename, specific=Root.IP_VER_6)
     json_file = gen_data_path_extension(Root.SERIALIZED, rir6, Root.JSON)
     data6 = read_from_jsonfile(json_file)
     rirasn = gen_specific_filename(filename=filename, specific=Root.ASN)
@@ -69,8 +69,8 @@ def slice_rir_output(filename, directory):
 
 
 def slice_rir(filename):
-    rir4 = gen_specific_filename(filename=filename, specific=Root.IP4)
-    rir6 = gen_specific_filename(filename=filename, specific=Root.IP6)
+    rir4 = gen_specific_filename(filename=filename, specific=Root.IP_VER_4)
+    rir6 = gen_specific_filename(filename=filename, specific=Root.IP_VER_6)
     rirasn = gen_specific_filename(filename=filename, specific=Root.ASN)
     return rir4, rir6, rirasn
 

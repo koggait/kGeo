@@ -14,9 +14,9 @@ def processing_peeringdb():
     json_file = gen_data_path_extension(Root.SERIALIZED, Root.PEERINGDB, Root.JSON)
     data = read_from_jsonfile(json_file)
     output_file = gen_data_path_extension(Root.PREPROCESSED, Root.PEERINGDB, Root.JSON)
-    filter_keys(data['data'], Root.PEERINGDB_KEEP_FIELDS, output_file)
+    filter_keys(data, Root.PEERINGDB_KEEP_FIELDS, output_file)
     output_file = gen_data_path_extension(Root.ORDERED, Root.PEERINGDB, Root.JSON)
-    order_key(data['data'], Root.ASN, output_file)
+    order_key(data, Root.PEERINGDB_KEEP_FIELDS[0], output_file)
     print('data preprocessed')
 
 

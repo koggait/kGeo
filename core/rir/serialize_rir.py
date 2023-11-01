@@ -49,17 +49,17 @@ def get_data(input_file, output_file, start_at, fields, delimiter):
 # for checking type
 # appending the record line to type
 def choose_dictionary_by_type(value_list, dict_asn, dict_ip4, dict_ip6, dict_object):
-    if value_list[2] == Root.IP4:
+    if value_list[2] == Root.RIR_IPV4:
         dict_ip4.append(dict_object)
     if value_list[2] == Root.ASN:
         dict_asn.append(dict_object)
-    if value_list[2] == Root.IP6:
+    if value_list[2] == Root.RIR_IPV6:
         dict_ip6.append(dict_object)
 
 
 def slice_rir_types(filename):
-    rir4 = gen_specific_filename(filename=filename, specific=gen_file_extension(Root.IP4, Root.JSON))
-    rir6 = gen_specific_filename(filename=filename, specific=gen_file_extension(Root.IP6, Root.JSON))
+    rir4 = gen_specific_filename(filename=filename, specific=gen_file_extension(Root.IP_VER_4, Root.JSON))
+    rir6 = gen_specific_filename(filename=filename, specific=gen_file_extension(Root.IP_VER_6, Root.JSON))
     rirasn = gen_specific_filename(filename=filename, specific=gen_file_extension(Root.ASN, Root.JSON))
     return rir4, rir6, rirasn
 

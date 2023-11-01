@@ -23,21 +23,21 @@ def serialize_data(filename):
     # split each line into values and append to dictionary
     with open(filename) as file:
         for line in file:
-            description = split_line_asnames(line)
-            dict_object = line_to_dict(description, fields)
+            value_list = _split_line_to_value_list(line)
+            dict_object = line_to_dict(value_list, fields)
             dic.append(dict_object)
 
     # return json dictionary
     return dic
 
 
-def split_line_asnames(line):
-    # reading line by line from core.the text file
-    d = list(line.strip().split(' ', 1))
-    e = list(d[1].strip().rsplit(', ', 1))
-    if len(e) == 1:
-        e = ['-', '-']
-    return [d[0], e[0], e[1]]
+def _split_line_to_value_list(line):
+    # reading line by line from the text file
+    as_number = list(line.strip().split(' ', 1))
+    as_list_name_cc = list(as_number[1].strip().rsplit(', ', 1))
+    if len(as_list_name_cc) == 1:
+        as_list_name_cc = ['-', '-']
+    return [as_number[0], as_list_name_cc[0], as_list_name_cc[1]]
 
 
 if __name__ == "__main__":
